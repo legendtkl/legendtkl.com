@@ -1,0 +1,671 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="格雷码,汉诺塔," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前段时间做结构光三维重建的时候用到了格雷码编码方法，这里正好做一下总结。
+这里讨论的是典型的二进制格雷码（Binary Gray Code），简称格雷码，由贝尔电话实验室研究物理学家Frank Gray提出。Frank Gray 1969年过世，这里所提的Gray码是他在1940年研究出来的，用来在PCM（Puslue Code Modulation）方法传送信号时避免错误。1953年3月17日，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="格雷码剖析">
+<meta property="og:url" content="http://yoursite.com/2014/01/03/gray-code/index.html">
+<meta property="og:site_name" content="Legendtkl">
+<meta property="og:description" content="前段时间做结构光三维重建的时候用到了格雷码编码方法，这里正好做一下总结。
+这里讨论的是典型的二进制格雷码（Binary Gray Code），简称格雷码，由贝尔电话实验室研究物理学家Frank Gray提出。Frank Gray 1969年过世，这里所提的Gray码是他在1940年研究出来的，用来在PCM（Puslue Code Modulation）方法传送信号时避免错误。1953年3月17日，">
+<meta property="og:image" content="http://yoursite.com/img/uploads/2014/01/250px-Binary-reflected_Gray_code_construction.svg_.png">
+<meta property="og:image" content="http://yoursite.com/img/uploads/2014/01/Tower_of_Hanoi.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/uploads/2014/01/gray_hanoi1.png">
+<meta property="og:updated_time" content="2016-05-02T03:39:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="格雷码剖析">
+<meta name="twitter:description" content="前段时间做结构光三维重建的时候用到了格雷码编码方法，这里正好做一下总结。
+这里讨论的是典型的二进制格雷码（Binary Gray Code），简称格雷码，由贝尔电话实验室研究物理学家Frank Gray提出。Frank Gray 1969年过世，这里所提的Gray码是他在1940年研究出来的，用来在PCM（Puslue Code Modulation）方法传送信号时避免错误。1953年3月17日，">
+<meta name="twitter:image" content="http://yoursite.com/img/uploads/2014/01/250px-Binary-reflected_Gray_code_construction.svg_.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 格雷码剖析 | Legendtkl </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Legendtkl</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-booklist">
+          <a href="/booklist" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                格雷码剖析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-01-03T22:09:14+08:00" content="2014-01-03">
+              2014-01-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/算法设计/" itemprop="url" rel="index">
+                    <span itemprop="name">算法设计</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/01/03/gray-code/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/01/03/gray-code/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前段时间做结构光三维重建的时候用到了格雷码编码方法，这里正好做一下总结。</p>
+<p>这里讨论的是典型的二进制格雷码（Binary Gray Code），简称格雷码，由贝尔电话实验室研究物理学家Frank Gray提出。Frank Gray 1969年过世，这里所提的Gray码是他在1940年研究出来的，用来在PCM（Puslue Code Modulation）方法传送信号时避免错误。1953年3月17日，Gray取得美国专利，这是格雷码第一次出版的日期。</p>
+<p>在一组数的编码中，若任意两个相信的代码只有一位二进制数不同，则称这种编码为格雷码，另外由于最大数与最小数之间也仅一位数不同，即“首尾相连”，因此又称循环码或反射码。前面提到格雷码的提出是为了避免讯号传送错误，原理是什么呢？很简单，在数字系统中，常要求代码按一定顺序变化。比如数字3（二进制011）切换到相信的数字4（二进制100），装置的三个位元都要转换，但是在实际电路中，3位变换不可能绝对同时发生，则计数中可能出现短暂的其它代码，可能导致电路状态错误。格雷码可以避免这种错误。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">十进制 格雷码 二进制</span><br><span class="line"><span class="number">0</span> <span class="number">000</span> <span class="number">000</span></span><br><span class="line"><span class="number">1</span> <span class="number">001</span> <span class="number">001</span></span><br><span class="line"><span class="number">2</span> <span class="number">011</span> <span class="number">010</span></span><br><span class="line"><span class="number">3</span> <span class="number">010</span> <span class="number">011</span></span><br><span class="line"><span class="number">4</span> <span class="number">110</span> <span class="number">100</span></span><br><span class="line"><span class="number">5</span> <span class="number">111</span> <span class="number">101</span></span><br><span class="line"><span class="number">6</span> <span class="number">101</span> <span class="number">110</span></span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>下面谈一下一个喜闻乐见的问题：格雷码生成。<br>格雷码有一种天然的递归算法：如果要求n位的格雷码，那就先n-1位的；假设G(n-1)表示所有n-1位的格雷码，于是n位格雷码可以用下面的两步构造出来，第一步，把G(n-1)中各个元素左边都加一个0.第二步，把G(n-1)中各个元素的顺序反过来排列，并且在前面都加一个1.由此得到的合集就是格雷码G(n)。<br><br><img src="/img/uploads/2014/01/250px-Binary-reflected_Gray_code_construction.svg_.png" alt=""><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">G(<span class="number">1</span>)=&#123;<span class="number">0</span>,<span class="number">1</span>&#125;</span><br><span class="line">G(<span class="number">2</span>)=<span class="number">0</span>&#123;<span class="number">0</span>,<span class="number">1</span>&#125;∪<span class="number">1</span>&#123;<span class="number">1</span>,<span class="number">0</span>&#125;=&#123;<span class="number">00</span>,<span class="number">01</span>,<span class="number">11</span>,<span class="number">10</span>&#125;</span><br><span class="line">G(<span class="number">3</span>)=&#123;<span class="number">000</span>,<span class="number">001</span>,<span class="number">011</span>,<span class="number">010</span>,<span class="number">110</span>,<span class="number">111</span>,<span class="number">101</span>,<span class="number">100</span>&#125;</span><br><span class="line">G(<span class="number">4</span>)=&#123;<span class="number">0000</span>,<span class="number">0001</span>,<span class="number">0011</span>,<span class="number">0010</span>,<span class="number">0110</span>,<span class="number">0111</span>,<span class="number">0101</span>,<span class="number">0100</span>,</span><br><span class="line"><span class="number">1100</span>,<span class="number">1101</span>,<span class="number">1111</span>,<span class="number">1110</span>,<span class="number">1010</span>,<span class="number">1011</span>,<span class="number">1001</span>,<span class="number">1000</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>证明也很简单，数学归纳法。当n=1时，{0，1}。如果比n-1小或等于的格雷码都可以用那两条规则构造出来。对于G(n)的前半部分，把0去除显然满足格雷码的性质，加上0同样满足；后半部分亦然。接口部分差异在于第一位的0和1，即只相差1位。G(n)的元素个数为G(n-1)的两倍，即2的n次方，完备性。证毕。简单用C++实现如下。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; generateGraycode(<span class="keyword">int</span> n)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; ans;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        ans.push_back(<span class="string">"0"</span>);</span><br><span class="line">        ans.push_back(<span class="string">"1"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; mid_ans = generateGraycode(n<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;::iterator iter=mid_ans.begin(); iter!=mid_ans.end(); ++iter)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">string</span> temp = *iter;</span><br><span class="line">            temp.insert(<span class="number">0</span>, <span class="string">"0"</span>);</span><br><span class="line">            ans.push_back(temp);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=mid_ans.size()<span class="number">-1</span>; i&gt;=<span class="number">0</span>; --i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">string</span> temp = mid_ans[i];</span><br><span class="line">            temp.insert(<span class="number">0</span>, <span class="string">"1"</span>);</span><br><span class="line">            ans.push_back(temp);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>另一种方法直接生成。稍微仔细观察一下不难发现，最后一位交替改变（0变1,1变0），在每两步改变之间，改变最右边的1的左边的位元（0变1，1变0）。比如G(4)，0000，先改变最后一位0，得到0001，然后改变最右边1的左边的位元得0011；然后再次改变最后一位得0010，直到1000.简单实现~<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gray</span><span class="params">(<span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">char</span> code[MAXN];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;n; i++)</span><br><span class="line">         code[i] = <span class="string">'0'</span>;</span><br><span class="line">    code[n] = <span class="string">'\0'</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, code);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(code[n<span class="number">-1</span>]==<span class="string">'0'</span>)</span><br><span class="line">            code[n<span class="number">-1</span>] = <span class="string">'1'</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            code[n<span class="number">-1</span>] = <span class="string">'0'</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, code);</span><br><span class="line"></span><br><span class="line">        i = n<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(code[i]==<span class="string">'0'</span>) i--;</span><br><span class="line">        <span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(code[i<span class="number">-1</span>]==<span class="string">'0'</span>)</span><br><span class="line">            code[i<span class="number">-1</span>]=<span class="string">'1'</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            code[i<span class="number">-1</span>]=<span class="string">'0'</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, code);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>等等，写到这里还没有结束。还记得汉诺塔问题吗？一定要记得啊，因为我不想再复述了:D。<br><img src="/img/uploads/2014/01/Tower_of_Hanoi.jpeg" alt="">那么汉诺塔问题与格雷码有什么关系呢？我们知道汉诺塔问题要求一次移动一个圆盘，对应到格雷码，如果我们把最小的圆盘对应为格雷码的最后一位，我们会发现格雷码的改变位元正好对应相应的圆盘。还有个问题，就是第1块圆盘的移动有两种选择。不过不要紧，再稍加观察一下，我们就会发现第1块圆盘的移动是有规律的。假设圆盘最开始所在的柱子编号为1，最终都要移动到编号为2的柱子上，另外一个柱子编号为3。我们发现当盘子总数为奇数时，第1块圆盘的移动序列为123123…；总数为偶数时，移动序列为132132…。至于其它圆盘的移动，稍加判断就可以了。那么一个解汉诺塔问题的非递归算法就出来。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gray_hanoi</span><span class="params">(<span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">//3 pegs</span></span><br><span class="line">    <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; *peg = new <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt;[<span class="number">3</span>];</span><br><span class="line">    <span class="comment">//1 disk moving order</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; order;</span><br><span class="line">    order.push_back(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=n; i&gt;<span class="number">0</span>; i--)</span><br><span class="line">        peg[<span class="number">0</span>].push(i);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> code[N];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++)</span><br><span class="line">        code[i] = <span class="string">'0'</span>;</span><br><span class="line">    code[n] = <span class="string">'\0'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//针对n的奇偶性构造disk1的移动序列</span></span><br><span class="line">    <span class="keyword">if</span>(n%<span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        order.push_back(<span class="number">2</span>);</span><br><span class="line">        order.push_back(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        order.push_back(<span class="number">3</span>);</span><br><span class="line">        order.push_back(<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> times = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(code[n<span class="number">-1</span>]==<span class="string">'0'</span>)</span><br><span class="line">            code[n<span class="number">-1</span>] = <span class="string">'1'</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            code[n<span class="number">-1</span>] = <span class="string">'0'</span>;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Move 1 from peg"</span> &lt;&lt; order[times%<span class="number">3</span>] &lt;&lt; <span class="string">" to peg"</span> &lt;&lt; order[(times+<span class="number">1</span>)%<span class="number">3</span>] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        peg[order[times%<span class="number">3</span>]<span class="number">-1</span>].pop();</span><br><span class="line">        peg[order[(times+<span class="number">1</span>)%<span class="number">3</span>]<span class="number">-1</span>].push(<span class="number">1</span>);</span><br><span class="line">        times++;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> pos = n<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(code[pos]==<span class="string">'0'</span>) pos--;</span><br><span class="line">        <span class="keyword">if</span>(pos==<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        pos--;</span><br><span class="line">        <span class="keyword">if</span>(code[pos]==<span class="string">'0'</span>)</span><br><span class="line">            code[pos]=<span class="string">'1'</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            code[pos]=<span class="string">'0'</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> from, to;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(!peg[i].empty() &amp;amp;&amp;amp; peg[i].top()==n-pos)</span><br><span class="line">                from = i;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(peg[i].empty() || peg[i].top()&gt;n-pos)</span><br><span class="line">                to = i;</span><br><span class="line">        &#125;</span><br><span class="line">        peg[from].pop();</span><br><span class="line">        peg[to].push(n-pos);</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Move "</span> &lt;&lt; n-pos &lt;&lt; <span class="string">" from peg"</span> &lt;&lt; from+<span class="number">1</span> &lt;&lt; <span class="string">" to peg"</span> &lt;&lt; to+<span class="number">1</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面是当圆盘总数为4个时候的运行结果<br><img src="/img/uploads/2014/01/gray_hanoi1.png" alt="gray_hanoi"><br>无聊的同学可以手动验证一下:)</p>
+<p>其实还有一个类似很有趣的问题：九连环问题。篇幅有限，这里就先不写了。大家回去自己看看吧！另外在集合的分割问题中，格雷码也有应用，等下次有空再写吧！</p>
+<p>Happy New Year!  Happy Weekend!</p>
+<p>参考：《C语言名题精选百则》</p>
+<p>wiki: 格雷码、汉诺塔、九连环, etc</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/格雷码/" rel="tag">#格雷码</a>
+          
+            <a href="/tags/汉诺塔/" rel="tag">#汉诺塔</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/12/24/perspective-projection/" rel="next" title="透视投影变换用于图像几何校正">
+                <i class="fa fa-chevron-left"></i> 透视投影变换用于图像几何校正
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/01/10/gray-code-and-set-partition/" rel="prev" title="格雷码应用之集合分割">
+                格雷码应用之集合分割 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="legendtkl" />
+          <p class="site-author-name" itemprop="name">legendtkl</p>
+          <p class="site-description motion-element" itemprop="description">Do not go gentle into that good night.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">65</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/legendtkl" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/HIT_Achilles" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/legendtkl" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-group"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">legendtkl</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'legendtkl';
+      var disqus_identifier = '2014/01/03/gray-code/';
+      var disqus_title = '格雷码剖析';
+      var disqus_url = 'http://yoursite.com/2014/01/03/gray-code/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

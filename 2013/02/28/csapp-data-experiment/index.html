@@ -1,0 +1,663 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="CSAPP，数据实验，右移，算术，逻辑," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="CSAPP是以前在IBMTC大家对Computer Systems： A Programmer’s Perspective的简称，中文名字是《深入理解计算机系统》。这本书我就不介绍了。最近拿出来温习一下，顺便把这本书上的实验再做一下。
+实验主要有：数据实验，二进制炸弹实验，缓冲区溢出实验，体系结构实验，性能实验，shell实验，malloc实验，代理实验。争取都做了吧！
+数据实验具体如下：函数sr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP实验之数据实验">
+<meta property="og:url" content="http://yoursite.com/2013/02/28/csapp-data-experiment/index.html">
+<meta property="og:site_name" content="Legendtkl">
+<meta property="og:description" content="CSAPP是以前在IBMTC大家对Computer Systems： A Programmer’s Perspective的简称，中文名字是《深入理解计算机系统》。这本书我就不介绍了。最近拿出来温习一下，顺便把这本书上的实验再做一下。
+实验主要有：数据实验，二进制炸弹实验，缓冲区溢出实验，体系结构实验，性能实验，shell实验，malloc实验，代理实验。争取都做了吧！
+数据实验具体如下：函数sr">
+<meta property="og:updated_time" content="2016-05-02T03:39:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSAPP实验之数据实验">
+<meta name="twitter:description" content="CSAPP是以前在IBMTC大家对Computer Systems： A Programmer’s Perspective的简称，中文名字是《深入理解计算机系统》。这本书我就不介绍了。最近拿出来温习一下，顺便把这本书上的实验再做一下。
+实验主要有：数据实验，二进制炸弹实验，缓冲区溢出实验，体系结构实验，性能实验，shell实验，malloc实验，代理实验。争取都做了吧！
+数据实验具体如下：函数sr">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> CSAPP实验之数据实验 | Legendtkl </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Legendtkl</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-booklist">
+          <a href="/booklist" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                CSAPP实验之数据实验
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2013-02-28T10:18:54+08:00" content="2013-02-28">
+              2013-02-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/算法设计/" itemprop="url" rel="index">
+                    <span itemprop="name">算法设计</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2013/02/28/csapp-data-experiment/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/02/28/csapp-data-experiment/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>CSAPP是以前在IBMTC大家对Computer Systems： A Programmer’s Perspective的简称，中文名字是《深入理解计算机系统》。这本书我就不介绍了。最近拿出来温习一下，顺便把这本书上的实验再做一下。</p>
+<p>实验主要有：数据实验，二进制炸弹实验，缓冲区溢出实验，体系结构实验，性能实验，shell实验，malloc实验，代理实验。争取都做了吧！</p>
+<p>数据实验具体如下：函数srl使用算术（由值xsta给出）来执行逻辑右移，紧跟着的是其他不包括右移或者除尘的运算。函数sta使用逻辑(值由xstrl给出)来执行算术右移，紧跟着的是其他不包括右移或者除法的运算。可以假设int是32位长的，移位量k的取值范围是0~31.</p>
+<p>一般而言，机器支持两种形式的右移：逻辑右移和算法右移。逻辑右移在左端补k个0，算术右移是在左端补k个最高有效位的拷贝。所以我们只要设计一个掩码就好，还是比较简单的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="title">srl</span><span class="params">(<span class="keyword">unsigned</span> x, <span class="keyword">int</span> k)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">/*Perform shift arithmetically */</span></span><br><span class="line">    <span class="keyword">unsigned</span> xsra = (int) x &gt;&gt; k;</span><br><span class="line">    <span class="comment">/* Make mask of low order 32-k bits*/</span></span><br><span class="line">    <span class="keyword">unsigned</span> mask = k ? ((<span class="number">1</span>&lt;&lt;(<span class="number">32</span>-k))<span class="number">-1</span>) : ~<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    return xsra &amp;&amp; mask;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sra</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> k)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">/*Perform shift logically*/</span></span><br><span class="line">    <span class="keyword">int</span> xsrl = (unsigned) x &gt;&gt; k;</span><br><span class="line">    <span class="comment">/*Make mask of high order k bits*/</span></span><br><span class="line">    <span class="keyword">unsigned</span> mask = k ? ~((<span class="number">1</span>&lt;&lt;(<span class="number">32</span>-k))<span class="number">-1</span>) : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    return (x&lt;<span class="number">0</span>) ? mask | xsrl : xsrl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于移位运算还有一点要注意是优先级问题：1&lt;&lt;5-1等价于1&lt;&lt;(5-1)而不是(1&lt;&lt;5)-1.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CSAPP，数据实验，右移，算术，逻辑/" rel="tag">#CSAPP，数据实验，右移，算术，逻辑</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/02/27/linux-deal-with-text/" rel="next" title="linux常用文本处理命令">
+                <i class="fa fa-chevron-left"></i> linux常用文本处理命令
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/03/16/reading-about-jobs/" rel="prev" title="优秀的艺术家抄袭，伟大的艺术家剽窃">
+                优秀的艺术家抄袭，伟大的艺术家剽窃 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="legendtkl" />
+          <p class="site-author-name" itemprop="name">legendtkl</p>
+          <p class="site-description motion-element" itemprop="description">Do not go gentle into that good night.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">65</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/legendtkl" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/HIT_Achilles" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/legendtkl" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-group"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">legendtkl</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'legendtkl';
+      var disqus_identifier = '2013/02/28/csapp-data-experiment/';
+      var disqus_title = 'CSAPP实验之数据实验';
+      var disqus_url = 'http://yoursite.com/2013/02/28/csapp-data-experiment/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

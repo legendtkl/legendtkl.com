@@ -1,0 +1,680 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="高效程序员的修炼," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="这次写一下书中说的高效编程的原则。
+一、永远都是你的错
+你写的代码任何时候出了问题都是你的错。这不是一个绝对的论断，而是一个建议。当你的代码出问题的时候，希望你的脑海中第一时间能出现这句话。相信每个人都会有经验，就不细说了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读书：《高效能程序员的修炼》（二）">
+<meta property="og:url" content="http://yoursite.com/2015/05/24/reading-about-effective-programming-ii/index.html">
+<meta property="og:site_name" content="Legendtkl">
+<meta property="og:description" content="这次写一下书中说的高效编程的原则。
+一、永远都是你的错
+你写的代码任何时候出了问题都是你的错。这不是一个绝对的论断，而是一个建议。当你的代码出问题的时候，希望你的脑海中第一时间能出现这句话。相信每个人都会有经验，就不细说了。">
+<meta property="og:updated_time" content="2016-05-02T03:39:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读书：《高效能程序员的修炼》（二）">
+<meta name="twitter:description" content="这次写一下书中说的高效编程的原则。
+一、永远都是你的错
+你写的代码任何时候出了问题都是你的错。这不是一个绝对的论断，而是一个建议。当你的代码出问题的时候，希望你的脑海中第一时间能出现这句话。相信每个人都会有经验，就不细说了。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 读书：《高效能程序员的修炼》（二） | Legendtkl </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Legendtkl</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-booklist">
+          <a href="/booklist" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                读书：《高效能程序员的修炼》（二）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-05-24T13:57:43+08:00" content="2015-05-24">
+              2015-05-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/读书/" itemprop="url" rel="index">
+                    <span itemprop="name">读书</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/05/24/reading-about-effective-programming-ii/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/24/reading-about-effective-programming-ii/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这次写一下书中说的高效编程的原则。</p>
+<p><strong><span style="font-size: 14pt;">一、永远都是你的错</span></strong></p>
+<p>你写的代码任何时候出了问题都是你的错。这不是一个绝对的论断，而是一个建议。当你的代码出问题的时候，希望你的脑海中第一时间能出现这句话。相信每个人都会有经验，就不细说了。</p>
+<p><a id="more"></a><span style="font-size: 14pt;"><strong>二、大道至简</strong></span></p>
+<p>“你永远都有简化的空间”。不管是写作还是写代码的时候都请记住这句话。对一个代码进行评价，作者提出了如下几个方面：1.代码简洁度；2.功能完整性；3.执行速度；4.编码花费时间；5.健壮性；6.灵活性。简洁一直是很多人奉行的原则，最有名的是乔布斯提出的“至繁归于至简”，国内很多人可能也是这个原因开始标称这是自己的原则。但是大部分也只是标称罢了。</p>
+<p>作者在书中提出了一个例子。下面的代码段。</p>
+<p>[ccei_cpp tab_size=”4”]</p>
+<p>if(s==String.Empty)</p>
+<p>if(s==””)</p>
+<p>[/ccei_cpp]</p>
+<p>你认为哪部分最好呢？可能大部分程序员会宣传第一种方式对编译器是多么的友好等等理由，但是不得不说第二种方式确实是更加的简洁。但是谁会care那些呢？第二种方式我一眼就能看出来是什么意思，就凭借着一点就足够了。不是吗？</p>
+<p><strong><span style="font-size: 14pt;">三、避免写注释</span></strong></p>
+<p>不得不承认每个程序员都讨厌写注释，但是很多人又在告诫我们写注释的好处，不写注释的坏处，比如代码可读性什么的。但是你有没有想过这个问题：代码可读性究竟是有代码自己决定的，还是由注释决定的呢？不要试图用战术的勤劳掩盖战略上的懒惰。你应该总是专注于编写代码，而忘了还有注释这种东西的存在。这会迫使你竭尽全力使用最简单、最直白、最能进行自我说明的方式把代码写出业。将注释融化到函数名和变量名中。Steve Yegge指出初级开发者与高级之间的关键区别：初级开发者依靠注释来讲故事，而实际上他们应该依靠代码本身。</p>
+<p><strong><span style="font-size: 14pt;">四、学会读源代码</span></strong></p>
+<p><div>在沟通这个复杂的领域里，写出能让人类领会并理解的连贯段落比敲出几行不至于让解释器或者编译器“呕吐”的软件代码要难得多。不管文档上怎么说，源代码才是最终的事实，是你所有找到的最好的、最确定的、最新的文档。</div></p>
+<p><div>真正的骇客世界只有一个简单的事实：如果一个软件在我的机器上运行，那它就是我的软件。我必须把它弄明白。从源代码开始构建是一条必须遵循的原则。</div><br><strong><span style="font-size: 14pt;">五、像橡皮鸭求助</span></strong></p>
+<p>相信很多人都听说过橡皮鸭调试方法。开发人员发现代码出现问题，将问题描述给橡皮鸭。就在描述的过程中，你可能会发现问题的所在。这个和我前一篇说的很像。比如stackoverflow为什么要重视提问题？因为就在你提问题的时候，你需要将问题的脉络说清楚给别人听，这个过程你不仅仅是在向别人描述，也是说给自己听。</p>
+<p><strong><span style="font-size: 14pt;">六、创新以人为本</span></strong></p>
+<p>这个已经被国内人说烂了。你可能不以为然。那么我们换一种说法：执行力比创新更重要。但是我觉得创新也是很重要的，任何时候。只是创新落地的时候需要强大的执行力。现在在国内一种更搞笑的是被一群连创意都提不出来的人拿来YY，甚至挖苦别人，真是哭笑不得。</p>
+<p><strong><span style="font-size: 14pt;">七、你的团队能通过电梯测试吗</span></strong></p>
+<p>电梯测试是说在乘坐电梯的短暂时间向旁边的人解释介绍你自己或者解释清楚你的问题。时间很短，这就需要我们将焦点集中在重要的地方。对于程序员，不能为了编码而编码。对于所有人，不能为了学习而学习，你需要有明确的目标，不然学习也不过是另一种浪费时间罢了。</p>
+<p><strong><span style="font-size: 14pt;">八、性能致胜</span></strong></p>
+<p>最后一点，性能致胜。</p>
+<p>最后的最后，关于这本书，内容比较杂。看上去应该是很多帖子的集合。推荐大家读一读。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/高效程序员的修炼/" rel="tag">#高效程序员的修炼</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/05/17/reading-about-effective-programming/" rel="next" title="读书：《高效能程序员的修炼》">
+                <i class="fa fa-chevron-left"></i> 读书：《高效能程序员的修炼》
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/30/day-by-day/" rel="prev" title="流水账">
+                流水账 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="legendtkl" />
+          <p class="site-author-name" itemprop="name">legendtkl</p>
+          <p class="site-description motion-element" itemprop="description">Do not go gentle into that good night.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">65</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/legendtkl" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/HIT_Achilles" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/legendtkl" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-group"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">legendtkl</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'legendtkl';
+      var disqus_identifier = '2015/05/24/reading-about-effective-programming-ii/';
+      var disqus_title = '读书：《高效能程序员的修炼》（二）';
+      var disqus_url = 'http://yoursite.com/2015/05/24/reading-about-effective-programming-ii/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,687 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="memcached,NoSQL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Basic解决什么问题主要是缓解数据库压力
+应用场景许多Web应用都将数据保存到RDBMS（关系数据库管理系统，Relational Database Management System）中，应用服务器从中读取数据并在浏览器中显示。但随着数据量的增大、访问的集中，就会出现RDBMS的负担加重、数据库响应恶化、网站显示延迟等影响。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="memcached学习笔记">
+<meta property="og:url" content="http://yoursite.com/2015/11/24/memcached-note/index.html">
+<meta property="og:site_name" content="Legendtkl">
+<meta property="og:description" content="Basic解决什么问题主要是缓解数据库压力
+应用场景许多Web应用都将数据保存到RDBMS（关系数据库管理系统，Relational Database Management System）中，应用服务器从中读取数据并在浏览器中显示。但随着数据量的增大、访问的集中，就会出现RDBMS的负担加重、数据库响应恶化、网站显示延迟等影响。">
+<meta property="og:image" content="http://yoursite.com/img/uploads/memcached.png">
+<meta property="og:image" content="http://yoursite.com/img/uploads/slab.png">
+<meta property="og:image" content="http://yoursite.com/img/uploads/slab2.png">
+<meta property="og:updated_time" content="2016-05-02T03:39:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="memcached学习笔记">
+<meta name="twitter:description" content="Basic解决什么问题主要是缓解数据库压力
+应用场景许多Web应用都将数据保存到RDBMS（关系数据库管理系统，Relational Database Management System）中，应用服务器从中读取数据并在浏览器中显示。但随着数据量的增大、访问的集中，就会出现RDBMS的负担加重、数据库响应恶化、网站显示延迟等影响。">
+<meta name="twitter:image" content="http://yoursite.com/img/uploads/memcached.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> memcached学习笔记 | Legendtkl </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Legendtkl</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-booklist">
+          <a href="/booklist" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                memcached学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-11-24T15:54:04+08:00" content="2015-11-24">
+              2015-11-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/DB/" itemprop="url" rel="index">
+                    <span itemprop="name">DB</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/24/memcached-note/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/24/memcached-note/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h2><h3 id="解决什么问题"><a href="#解决什么问题" class="headerlink" title="解决什么问题"></a>解决什么问题</h3><p>主要是缓解数据库压力</p>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>许多Web应用都将数据保存到RDBMS（关系数据库管理系统，Relational Database Management System）中，应用服务器从中读取数据并在浏览器中显示。但随着数据量的增大、访问的集中，就会出现RDBMS的负担加重、数据库响应恶化、网站显示延迟等影响。</p>
+<a id="more"></a>
+<h3 id="Memcached"><a href="#Memcached" class="headerlink" title="Memcached"></a>Memcached</h3><p>memcached是高性能的分布式内存缓存服务器。一般的使用目的是，通过缓存数据库查询结果，减少数据库访问次数，以提高动态Web应用的速度、提高可扩张性。<br><img src="/img/uploads/memcached.png" alt=""></p>
+<h3 id="Memcached特性："><a href="#Memcached特性：" class="headerlink" title="Memcached特性："></a>Memcached特性：</h3><ul>
+<li>协议简单</li>
+<li>基于libevent的事件处理</li>
+<li>内置内存存储方式</li>
+<li>memcached不互相通信的分布式</li>
+</ul>
+<h4 id="协议简单"><a href="#协议简单" class="headerlink" title="协议简单"></a>协议简单</h4><p>C/S通信不使用复杂的XML等格式，而使用简单的基于文本行的协议。</p>
+<h4 id="基于libevent"><a href="#基于libevent" class="headerlink" title="基于libevent"></a>基于libevent</h4><p>libevent程序库，将Linux的epoll、BSD类操作系统的kqueue等事件处理功能封装成统一的接口。及时对服务器的连接数增加，也能发挥O(1)的性能。</p>
+<h4 id="内置内存存储方式"><a href="#内置内存存储方式" class="headerlink" title="内置内存存储方式"></a>内置内存存储方式</h4><p>为了提高性能，memcached中保存的数据都存储在memcached内置的内存存储空间中。不具有持久性。内容容量达到指定值之后，就基于LRU算法进行替换。</p>
+<h4 id="不互相通信的分布式"><a href="#不互相通信的分布式" class="headerlink" title="不互相通信的分布式"></a>不互相通信的分布式</h4><p>服务端没有分布式功能。各个memcached不会互相通信以共享信息。怎么进行分布式完全取决于Client端的实现。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>多个平台，参考官方手册。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>客户端api: <a href="https://code.google.com/p/memcached/wiki/Clients" target="_blank" rel="external">https://code.google.com/p/memcached/wiki/Clients</a></p>
+<h3 id="操作数据"><a href="#操作数据" class="headerlink" title="操作数据"></a>操作数据</h3><h4 id="保存数据"><a href="#保存数据" class="headerlink" title="保存数据"></a>保存数据</h4><p>my $add = $memcached-&gt;add(‘键’, ‘值’, ‘期限’);<br>my $replace = $memcached-&gt;replace(‘键’, ‘值’, ‘期限’)<br>my $set = $memcached-&gt;set(‘键’， ‘值’, ‘期限’)</p>
+<h4 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h4><p>my $val = $memcached-&gt;get(‘键’);<br>my $val = $memcached-&gt;get_multi(‘键1’, ‘键2’, ‘键3’);</p>
+<h4 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h4><p>$memcached-&gt;delete(‘键’, ‘阻塞时间’)</p>
+<h2 id="内存存储"><a href="#内存存储" class="headerlink" title="内存存储"></a>内存存储</h2><h3 id="Slab-Allocation机制：整理内存以便重复使用"><a href="#Slab-Allocation机制：整理内存以便重复使用" class="headerlink" title="Slab Allocation机制：整理内存以便重复使用"></a>Slab Allocation机制：整理内存以便重复使用</h3><p>在该机制之前，内存的分配是通过对所有记录简单地进行malloc和free来进行的。malloc/free会导致内存碎片，加重操作系统内存管理器负担。<br>Slab Allocator的基本原理是按照预先规定的大小，将分配的内存分割成特定长度的块，以完全解决内存碎片问题。原理相当简单：将分配的内存分割成各种尺寸的块(chunk)，并把尺寸相同的块分成组。<br><img src="/img/uploads/slab.png" alt=""></p>
+<h4 id="缓存记录的原理"><a href="#缓存记录的原理" class="headerlink" title="缓存记录的原理"></a>缓存记录的原理</h4><p>memcached根据收到的数据的大小，选择最适合数据大小的slab。memcached中保存着slaba内空闲chunk的列表，根据该列表选择chunk，然后将数据缓存其中。<br><img src="/img/uploads/slab2.png" alt=""></p>
+<h4 id="Slab的缺点"><a href="#Slab的缺点" class="headerlink" title="Slab的缺点"></a>Slab的缺点</h4><p>缺点也是显然的。由于分配的是特定长度的内存，因此无法有效利用分配的内存。例如将100字节的数据缓存到128字节的chunk中，剩余的128字节就浪费了。</p>
+<h4 id="Growth-Factor调优"><a href="#Growth-Factor调优" class="headerlink" title="Growth Factor调优"></a>Growth Factor调优</h4><p>通过f选项，默认值为1.25。也就是组的大小为因子为1.25的等比数列。GF之前，这个因子为2,称为powers of 2策略。</p>
+<h2 id="删除机制"><a href="#删除机制" class="headerlink" title="删除机制"></a>删除机制</h2><h3 id="Lazy-Expiration"><a href="#Lazy-Expiration" class="headerlink" title="Lazy Expiration"></a>Lazy Expiration</h3><p>不会主动监视记录是否过期，而是在get时查看记录的时间戳，检查记录是否过期。这种技术称为lazy expiration。</p>
+<h3 id="LRU"><a href="#LRU" class="headerlink" title="LRU"></a>LRU</h3><p>不写了。</p>
+<h2 id="Memcached的分布式算法"><a href="#Memcached的分布式算法" class="headerlink" title="Memcached的分布式算法"></a>Memcached的分布式算法</h2><p>客户端实现，一致性hash算法</p>
+<h3 id="客户端实现"><a href="#客户端实现" class="headerlink" title="客户端实现"></a>客户端实现</h3><p>简单来说就是使用一个Hash函数，存数据的时候根据hash函数确定数据存放的服务器。当客户端取数据的时候，使用同样的hash函数就可以计算出存放数据的服务器，如果数据没有过期即可取到数据。</p>
+<h3 id="负载均衡：一致性哈希"><a href="#负载均衡：一致性哈希" class="headerlink" title="负载均衡：一致性哈希"></a>负载均衡：一致性哈希</h3><p>我们知道使用mod的方法做负载均衡会有很多问题<br>一致性哈希算法简单来说，首先求出memcached服务器节点的哈希值，并将其配置到0~2^32的圆上。然后用同样的方法求出存储数据的键的哈希值，并映射到圆上。然后从数据映射到的位置开始顺时针查找，将数据保存到找到的第一个服务器上。如果超过2^32仍然找不到服务器，就会保存到第一台memcached服务器上。<br>相比mod 方法，一致性hash算法在插入新服务器的时候影响更小。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/memcached/" rel="tag">#memcached</a>
+          
+            <a href="/tags/NoSQL/" rel="tag">#NoSQL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/22/webpy-code/" rel="next" title="webpy源码浅析">
+                <i class="fa fa-chevron-left"></i> webpy源码浅析
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/25/go-generic-programming/" rel="prev" title="go"泛型编程"">
+                go"泛型编程" <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="legendtkl" />
+          <p class="site-author-name" itemprop="name">legendtkl</p>
+          <p class="site-description motion-element" itemprop="description">Do not go gentle into that good night.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">65</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/legendtkl" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/HIT_Achilles" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/legendtkl" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-group"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic"><span class="nav-number">1.</span> <span class="nav-text">Basic</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决什么问题"><span class="nav-number">1.1.</span> <span class="nav-text">解决什么问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">1.2.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Memcached"><span class="nav-number">1.3.</span> <span class="nav-text">Memcached</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Memcached特性："><span class="nav-number">1.4.</span> <span class="nav-text">Memcached特性：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#协议简单"><span class="nav-number">1.4.1.</span> <span class="nav-text">协议简单</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于libevent"><span class="nav-number">1.4.2.</span> <span class="nav-text">基于libevent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内置内存存储方式"><span class="nav-number">1.4.3.</span> <span class="nav-text">内置内存存储方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不互相通信的分布式"><span class="nav-number">1.4.4.</span> <span class="nav-text">不互相通信的分布式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.5.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.6.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作数据"><span class="nav-number">1.7.</span> <span class="nav-text">操作数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#保存数据"><span class="nav-number">1.7.1.</span> <span class="nav-text">保存数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取数据"><span class="nav-number">1.7.2.</span> <span class="nav-text">获取数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除数据"><span class="nav-number">1.7.3.</span> <span class="nav-text">删除数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存存储"><span class="nav-number">2.</span> <span class="nav-text">内存存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Slab-Allocation机制：整理内存以便重复使用"><span class="nav-number">2.1.</span> <span class="nav-text">Slab Allocation机制：整理内存以便重复使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存记录的原理"><span class="nav-number">2.1.1.</span> <span class="nav-text">缓存记录的原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Slab的缺点"><span class="nav-number">2.1.2.</span> <span class="nav-text">Slab的缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Growth-Factor调优"><span class="nav-number">2.1.3.</span> <span class="nav-text">Growth Factor调优</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除机制"><span class="nav-number">3.</span> <span class="nav-text">删除机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Lazy-Expiration"><span class="nav-number">3.1.</span> <span class="nav-text">Lazy Expiration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LRU"><span class="nav-number">3.2.</span> <span class="nav-text">LRU</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Memcached的分布式算法"><span class="nav-number">4.</span> <span class="nav-text">Memcached的分布式算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端实现"><span class="nav-number">4.1.</span> <span class="nav-text">客户端实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡：一致性哈希"><span class="nav-number">4.2.</span> <span class="nav-text">负载均衡：一致性哈希</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">legendtkl</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'legendtkl';
+      var disqus_identifier = '2015/11/24/memcached-note/';
+      var disqus_title = 'memcached学习笔记';
+      var disqus_url = 'http://yoursite.com/2015/11/24/memcached-note/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

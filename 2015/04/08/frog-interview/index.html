@@ -1,0 +1,782 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Fog Creek,Peteris Krumins," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="译注1：在我刚开始写博客的时候，发现了Peteris Krumins，特别高产的博主。博客地址是：www.catonmat.net。我给他发了一封邮件，希望可以将他的一篇博文翻译成中文，他很开心的答应了。前段时候Peteris来信问我，有没有兴趣再翻译一篇。于是有了这篇译文。
+译注2：关于Fog Creek公司。Fog Creek是一家致力于项目管理工具的公司。我所知道的Trello就是出自这家">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【译】Fog Creek采访：Peteris Krumins">
+<meta property="og:url" content="http://yoursite.com/2015/04/08/frog-interview/index.html">
+<meta property="og:site_name" content="Legendtkl">
+<meta property="og:description" content="译注1：在我刚开始写博客的时候，发现了Peteris Krumins，特别高产的博主。博客地址是：www.catonmat.net。我给他发了一封邮件，希望可以将他的一篇博文翻译成中文，他很开心的答应了。前段时候Peteris来信问我，有没有兴趣再翻译一篇。于是有了这篇译文。
+译注2：关于Fog Creek公司。Fog Creek是一家致力于项目管理工具的公司。我所知道的Trello就是出自这家">
+<meta property="og:image" content="http://ww4.sinaimg.cn/mw690/7cc829d3gw1eqz7p4ul34j203c03caa1.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/7cc829d3gw1eqz7p66mrkj20ju05tdi7.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/7cc829d3gw1eqz7p6y2uoj20ju05ttaw.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/mw690/7cc829d3gw1eqz7p7szj5j20ju05tdjl.jpg">
+<meta property="og:updated_time" content="2016-05-02T03:39:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【译】Fog Creek采访：Peteris Krumins">
+<meta name="twitter:description" content="译注1：在我刚开始写博客的时候，发现了Peteris Krumins，特别高产的博主。博客地址是：www.catonmat.net。我给他发了一封邮件，希望可以将他的一篇博文翻译成中文，他很开心的答应了。前段时候Peteris来信问我，有没有兴趣再翻译一篇。于是有了这篇译文。
+译注2：关于Fog Creek公司。Fog Creek是一家致力于项目管理工具的公司。我所知道的Trello就是出自这家">
+<meta name="twitter:image" content="http://ww4.sinaimg.cn/mw690/7cc829d3gw1eqz7p4ul34j203c03caa1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 【译】Fog Creek采访：Peteris Krumins | Legendtkl </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Legendtkl</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-booklist">
+          <a href="/booklist" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                【译】Fog Creek采访：Peteris Krumins
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-04-08T19:36:17+08:00" content="2015-04-08">
+              2015-04-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/翻译/" itemprop="url" rel="index">
+                    <span itemprop="name">翻译</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/04/08/frog-interview/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/04/08/frog-interview/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>译注1：在我刚开始写<a href="http://www.legendtkl.com" target="_blank" rel="external">博客</a>的时候，发现了Peteris Krumins，特别高产的博主。博客地址是：<a href="http://www.catonmat.net" target="_blank" rel="external">www.catonmat.net</a>。我给他发了一封邮件，希望可以将他的一篇博文翻译成中文，他很开心的答应了。前段时候Peteris来信问我，有没有兴趣再翻译一篇。于是有了这篇译文。</li>
+<li>译注2：关于Fog Creek公司。Fog Creek是一家致力于项目管理工具的公司。我所知道的Trello就是出自这家公司。让我印象比较深刻的还有办公环境，说其好于google也不为过。不信你去搜索一下。</li>
+<li>注3：Fog Creek会定期对一些开发人员进行访谈。下面是采访译文。<a id="more"></a></li>
+</ul>
+<hr>
+<p><img src="http://ww4.sinaimg.cn/mw690/7cc829d3gw1eqz7p4ul34j203c03caa1.jpg" alt="peter"></p>
+<p>在dev.life栏目中，我们会和一些开发者聊聊关于他们的编程热情：他们怎么喜欢上编程，以及喜欢什么样的工作。</p>
+<p>本文的嘉宾是 <a href="https://twitter.com/pkrumins" target="_blank" rel="external">Peteris Krumins</a>，他是 <a href="https://www.browserling.com/" target="_blank" rel="external">Browserling</a> 公司的联合创始人兼 CEO。Browserling是一个网站多浏览器测试的在线工具，汇集了主流浏览器的网站，可以帮助网页设计师测试网站在不同浏览器下的兼容性。同时他还是书籍《Perl One-Liners》的作者。他经常在博客上写一些关于软件开发的文章。</p>
+<p><strong>Fog Creek：你是怎么进入软件开发行业的？</strong></p>
+<p><strong>Peteris：</strong>我在6岁的时候第一次接触计算机，当时在妈妈工作的地方看到了一个386或者486的计算机。当时我就被深深吸引了。之后我就一起幻想能有一台自己的电脑。我试了很多方法，最后从一些朋友那儿得到了一台。为了蹭网，我甚至假装是大学生，尽管我还是一个小孩子。</p>
+<p>我最开始从一个叫Zombie的朋友那儿得到了一台笔记本电脑。他是一个了不起的系统管理员，将一台闲置的笔记本送给我了。我现在还保存着：IBM Butterfly 笔记本（ThinkPad 701CS），8M内存，800M硬盘，我最开始用来跑Windows 95和OpenBSD。后来我将内存升级成了40M。它还有细缆PCMCIA网卡，我家里的网络最开始是10Mb/s。</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/7cc829d3gw1eqz7p66mrkj20ju05tdi7.jpg" alt=""></p>
+<p>再后来我在15岁的时候拥有了自己的计算机。当时它有着很不错的配置：400Mhz赛扬处理器，256M内存，8G硬盘驱动器，16M 3D Blaster Banshee显卡，17寸75Hz，分辨率1024×768的CRT显示器，原厂配置Windows 98操作系统。</p>
+<p>计算机知识我是完全自学的。刚开始我学习了各种编程语言。当我拿到我赛扬计算机的时候，我已经知道自己想要做什么了。我想要做网页，于是开始学习HTML、JavaScript和CSS。最开始我并不知道网站是怎么工作的以及服务器相关的知识，一段时间才明白我需要一个web服务器去运行我的网站。我先是将我的网站托管在Angelfire上，后来用PHP和MySQL搭建了自己的Linux Slackware web服务器。我也想做一名黑客，所以我还学习了C和汇编语言。另外我花了很多时间在IRCNet上，所以我还学习了mIRC脚本并用VB搭建了自己的IRC客户端。（注：IRC是Internet Relay Chat的英文缩写，中文一般称为互联网中继聊天。由芬兰人JarkkOikarinen于1988年首创的一种网络聊天协议。mIRC是英国mIRC公司出品的IRC类客户端软件。mIRC脚本是其集成的脚本语言。）</p>
+<p><strong>Fog Creek：谈一谈你现在的工作。</strong></p>
+<p><strong>Peteris：</strong>我现在是Browserling公司的CEO。2011年，我和一个朋友在旧金山湾区成立了Browerling公司。现在我每天都会写很多代码，管理服务器，和客户与雇员们工作。我很喜欢我现在的工作，实在无法想像如果我从事别的工作会是什么样。另外我还是Paul Graham的死粉，也是他的文章激励我创业。（注：Paul Graham就是特别火的《黑客与画家》的作者，没有读过的朋友，建议看一看。）</p>
+<p>我现在全身心致力于扩展业务。我停止了所有副业、写书等任何可能分散我注意力的事情。创业成功的首要原则就是要百分百地投入。我现在已经实现了营收增长，并且正在建一个国际化远程的开发团队。我刚招聘了一个乌克兰的牛逼工程师，并向非英语市场上扩展业务。</p>
+<p>我也解决了一些技术问题，比如如何将虚拟机上运行的浏览器分配给不同的客户，如何每秒钟抓取数以百计的浏览器截图。我喜欢服务器相关的工作，并且我打算将服务器从EC2和Rackspace云上迁到物理机上。云服务器是很适合初创公司，但是随着发展壮大，服务器迁到自己的地盘还是很有必要的：可以节省开支并提高性能。（注：EC2是Amazon云。Rackspace是全球三个云厂商之一。）</p>
+<p><strong>Fog Creek:：什么时候是你最开心的编程时刻？</strong></p>
+<p><strong>Peteris：</strong>当我工作状态极好和搞定问题的时候是最开心的。我经常能进入状态，打算分享一下。晚上工作白天休息。晚上时间干扰很少能让你保持专心。另外一个秘诀是关闭Twitter、Facebook、Skype、GTalk、G+等社交工具。当你在工作状态时候不想被突然的消息提示打断吧。</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/7cc829d3gw1eqz7p6y2uoj20ju05ttaw.jpg" alt=""></p>
+<p><strong>Fog Creek：你的开发环境是什么样的？</strong></p>
+<p><strong>Peteris：</strong>我装了双操作系统。我在自己的工作站使用Windows 7，通过SSH登录Linux服务器。我上个月刚搭建了一个新的工作站：Intel i7 4790K 处理器并超频处理到 4.7Ghz。</p>
+<p>另外我还有一个Linux 防火墙服务器、一个Linux文件服务器和一个Linux开发服务器。通过Samba将Linux文件服务器挂载到Windows上，然后在RAID6上运行驱动器。所有的这些Linux服务器都运行Slackware。我很喜欢Slackware的简洁。为了保证系统简洁，我一般只安装的需要的package。比如firewall服务器上只有Bash, Vim和Iptable。文件服务器上只有Bash, Vim, Cryptsetup和Samba。开发服务器上有我开发需要的一切工具。</p>
+<p>我在Linux上使用Vim，在Windows上使用gVim和Visual Studio。Windows应用开发的时候，如果环境中没有IntelliSense，也很让人抓狂。我有一个高度定制化的Vim并有很多插件，比如：</p>
+<ul>
+<li>surround.vim (quickly edit surrounding text)</li>
+<li>repeat.vim (repeat surround commands)</li>
+<li>matchit.vim (extend what % key matches)</li>
+<li>snipmate.vim (code snippets)</li>
+<li>nerd_tree.vim (explore filesystem from vim)</li>
+<li>a.vim (alternate C and H files)</li>
+<li>ragtag.vim (mappings for editing HTML)</li>
+<li>tabular.vim (aligning text)</li>
+<li>bufexplorer.vim (working with buffers)</li>
+<li>python.vim (better python support)</li>
+<li>exchange.vim (exchange text quickly)</li>
+<li>abolish.vim (substitute words)</li>
+<li><p>speeddating.vim (increment dates)<br>Windows下的工具：</p>
+</li>
+<li><p>Total Commander (file manager)</p>
+</li>
+<li>Visual Studi(can’t beat IntelliSense)</li>
+<li>SQLyog (GUI manager for MySQL databases)</li>
+<li>SQLiteSpy (GUI manager for SQLite databases)</li>
+<li>pgAdmin (GUI manager for Postrgres databases)</li>
+<li>WinSCP and SecureFX (secure FTP clients)</li>
+<li>Putty and SecureCRT (SSH clients)</li>
+<li>KeePass (password manager)</li>
+<li>ClipX (clipboard manager)</li>
+<li>Launchy (program launcher)</li>
+<li>Locate32 (file indexer)</li>
+<li>allSnap (window manager)</li>
+<li>AutoHotkeys (automate tasks and programs)</li>
+<li>Virtual CloneDrive (mount disk images)</li>
+<li>IsoBuster (extract disk images)</li>
+<li>ImgBurn (image burner)</li>
+<li>Enounce MySpeed (speedup or slow down videos)</li>
+<li>Hex Workshop (hex editor)</li>
+<li>VMWare Workstation (virtual machines)</li>
+<li>Cygwin (unix tools)</li>
+<li>UltraMon (multi-screen support)</li>
+<li>Beyond Compare (diffing tool)</li>
+<li>Tclock2 (better clock)</li>
+<li>Fineprint (printer proxy)</li>
+<li>SumatraPDF (better PDF viewer)</li>
+<li>AviSynth (edit videos programmatically)</li>
+<li>ffmpeg (convert videos)</li>
+<li>VirtualDub (convert and edit videos)</li>
+<li>WinDirStat (disk space visualization)</li>
+<li>clink (better cmd.exe)</li>
+<li>IDA Pr(debugging)</li>
+<li>Photoshop</li>
+<li><p>Sysinternals tools<br>Linux下的工具：</p>
+</li>
+<li><p>samba (mounting Linux on Windows)</p>
+</li>
+<li>tmux and screen (persistent shell sessions)</li>
+<li>all the standard UNIX utilities (awk, sed, grep, head, tail, uniq, sort, etc.)</li>
+<li>perl (rapid prototyping, quick hacks, one-liners)</li>
+<li>iptables and nftables (firewalling)</li>
+<li>htop (better top)</li>
+<li>mtr (better traceroute)</li>
+<li>multitail (tail multiple files in multiple windows)</li>
+<li>nc (netcat, TCP/IP swiss army knife)</li>
+<li>iftop (bandwidth monitor)</li>
+<li>ack (better grep)</li>
+<li>ipcalc (network address calculator)</li>
+<li>pv (pipe viewer – UNIX pipe progress bar)</li>
+<li>rsync (backups)</li>
+<li>ncdu (disk space visualization)</li>
+<li>curl (http client)</li>
+<li>nmap (network scanner)</li>
+<li>tcpdump and wireshark (for network debugging)</li>
+<li>sysdig (strace + lsof + tcpdump combined)</li>
+<li>youtube-dl (downloading all online videos)<br>我坐着编程。我从来没有试过站着或者走着编程，我觉得那样太怪了。当我在工作状态时，我收听电台di.fm。如果不在，音乐往往让人分心。我已经用微软的Natural键盘写了十年代码了，除了年老色衰之外，它现在依然工作很好。</li>
+</ul>
+<p>在我试着理解某些东西的时候，我会做很多的笔记。当我遇到复杂问题的时候，我一般将它们分解成小的易于解决的子问题，列在ToDlist上，一个一个解决。实际上我的ToDlist分成三种：长期的（未来1到2年）、中期的（未来几个月）和短期的。</p>
+<p><strong>Fog Creek：关于开发，最喜欢的书或者资源？</strong></p>
+<p><strong>Peteris：</strong>我很喜欢计算机和科学书籍。每几个月我就花一天时间研究一下最新的出版物并买上一些最感兴趣的。下面我列出我最喜欢的5本书。</p>
+<p>1. 《<a href="http://www.amazon.cn/gp/product/0805071660/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=536&amp;creative=3200&amp;creativeASIN=0805071660&amp;linkCode=as2&amp;tag=vastwork-23" target="_blank" rel="external">The New Turing Omnibus</a>》<br>对计算机感兴趣的人必读。这本书共有66篇小文章，全都是最重要和最有趣的计算机相关知识，比如压缩、图灵机、正则方法和神经网络等。这本书的写作风格休闲，基本不含有数学相关的知识。一直是我的最爱。</p>
+<p>2. 《<a href="http://www.amazon.cn/gp/product/1441418687/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=536&amp;creative=3200&amp;creativeASIN=1441418687&amp;linkCode=as2&amp;tag=vastwork-23" target="_blank" rel="external">The Little Book of Semaphores</a>》<br>这本书告诉我们如何去思考多线程执行的问题以及如何解决同步问题。我强烈推荐这本书，如果你是自学的话更加推荐。这本书会引导读者一步一步去解决一系列的经典和非经典同步问题。解决问题的过程很有乐趣，我已经将它推荐给了我身边的每一个人。</p>
+<p>3. 《<a href="http://www.amazon.cn/gp/product/B00SFZH0DC/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=536&amp;creative=3200&amp;creativeASIN=B00SFZH0DC&amp;linkCode=as2&amp;tag=vastwork-23" target="_blank" rel="external">编程珠玑</a>》和《<a href="http://www.amazon.cn/gp/product/B004ZWBW5G/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=536&amp;creative=3200&amp;creativeASIN=B004ZWBW5G&amp;linkCode=as2&amp;tag=vastwork-23" target="_blank" rel="external">编程</a><a href="http://www.amazon.cn/gp/product/B004ZWBW5G/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=536&amp;creative=3200&amp;creativeASIN=B004ZWBW5G&amp;linkCode=as2&amp;tag=vastwork-23" target="_blank" rel="external">珠玑（续）</a>》<br>经典编程书籍。Jon Bentley知道如何清楚、热情地写算法问题。这本书一直很好，它会教你如何分析问题、将问题拆开成小问题，以及高效实现解决方法。如果你读了这两本书，那么你会通过Google面试的。（注：我们都知道这是远远不够的：）。）</p>
+<p>4. 《<a href="http://www.amazon.cn/gp/product/0262560992/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=536&amp;creative=3200&amp;creativeASIN=0262560992&amp;linkCode=as2&amp;tag=vastwork-23" target="_blank" rel="external">The Little Schemer</a>》<br>这本书会以一种很有趣的方式教你一些关于LISP的知识。这本书就像你和作者之间关于数百个Scheme编程问题的对话，它会教学会递归思考。它会教你思考并锻炼你的思维能力。最有趣的编程书籍之一。</p>
+<p>5. 《The Elements of Style | <a href="http://www.amazon.cn/gp/product/B008H0PQPE/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=536&amp;creative=3200&amp;creativeASIN=B008H0PQPE&amp;linkCode=as2&amp;tag=vastwork-23" target="_blank" rel="external">风格的要素</a>》 和 《The Elements of Programming Style | <a href="http://www.amazon.cn/gp/product/B00UG7A7KA/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=536&amp;creative=3200&amp;creativeASIN=B00UG7A7KA&amp;linkCode=as2&amp;tag=vastwork-23" target="_blank" rel="external">编程风格</a>》<br>严格意义上来说，《The elements of Style》并不是完全的开发或者编程书籍，而是一本关于写作的书籍。为了成为一个牛逼的程序员，你需要和别人清楚的交流，写作技巧是必要的。这本书一共100页，你一个晚上就可以读完。</p>
+<p>《The Elements of Programming Style | <a href="http://www.amazon.cn/gp/product/B00UG7A7KA/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=536&amp;creative=3200&amp;creativeASIN=B00UG7A7KA&amp;linkCode=as2&amp;tag=vastwork-23" target="_blank" rel="external">编程风格</a>》要一本经典的编程书籍。作者是Kernighan，写作风格深受到前一本书影响。这本书有点古老，但是基本所有的东西依然很有用。这本书共有70条编程规则，比如<strong>清晰书写</strong>。</p>
+<p><img src="http://ww2.sinaimg.cn/mw690/7cc829d3gw1eqz7p7szj5j20ju05tdjl.jpg" alt=""></p>
+<p><strong>Fog Creek：你目前使用的技术能分享一下吗？</strong></p>
+<p><strong>Peteris：</strong>我是Visual Studio的死粉，刚下载了Visual Studi2015 Preview版本并且开始使用了。我还在虚拟机中装了Windows 10。由于我现在做多浏览器的测试工作，对微软的新浏览器Spartan还是很期待的。</p>
+<p>Google刚开源了Kythe，这是一个很好的学习机会。我去年就从一个Googler朋友那儿听说了，早已经等不及了。这个周末我打算在Linux内核源代码上试试Kythe。</p>
+<p>如果我有更多时间，我想把Oculus Rift和运动平台结合起来做一些虚拟现实的小东东。</p>
+<p><strong>Fog Creek：不编程的时候喜欢做些什么？</strong></p>
+<p><strong>Peteris：</strong>我喜欢锻炼身体，做一些田径运动。我发现短路运动比咖啡更有用。我做10组短路之后，在接下来10到12个小时里都精力充沛，可以整个晚上编程像个怪物一样。我也喜欢田径比赛，特别是400米和800米。</p>
+<p><strong>Fog Creek：对于年轻的自己，你有什么建议？</strong></p>
+<p><strong>Peteris：</strong>4条建议：</p>
+<ul>
+<li>1. 快速、高效解决问题，并继续</li>
+<li>2. 不要做没价值的事情</li>
+<li>3. 更早开始写技术博客</li>
+<li>4. 版本迭代尽量早尽量快</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Fog-Creek/" rel="tag">#Fog Creek</a>
+          
+            <a href="/tags/Peteris-Krumins/" rel="tag">#Peteris Krumins</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/10/31/go-datastructure/" rel="next" title="Go语言学习笔记:数据类型">
+                <i class="fa fa-chevron-left"></i> Go语言学习笔记:数据类型
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/05/06/linux-alias/" rel="prev" title="linux妙用alias">
+                linux妙用alias <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/avatar.png"
+               alt="legendtkl" />
+          <p class="site-author-name" itemprop="name">legendtkl</p>
+          <p class="site-description motion-element" itemprop="description">Do not go gentle into that good night.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">65</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/legendtkl" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/HIT_Achilles" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/legendtkl" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-group"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">legendtkl</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'legendtkl';
+      var disqus_identifier = '2015/04/08/frog-interview/';
+      var disqus_title = '【译】Fog Creek采访：Peteris Krumins';
+      var disqus_url = 'http://yoursite.com/2015/04/08/frog-interview/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
